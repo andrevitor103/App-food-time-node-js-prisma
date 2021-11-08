@@ -1,0 +1,3 @@
+class SnacksController {}
+
+export { SnacksController };
