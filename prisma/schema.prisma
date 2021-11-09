@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id            String @id @default(uuid())
+  description   String @default("Sem categoria")
+  snack      Snack[]
+  @@map("categories")
+}
+
+model Snack {
+  id            String @id @default(uuid())
+  name          String
+  ingredients   String?
+  price         Decimal
+  category Category @relation(fields: [category_id], references: [id] )
+  category_id   String
+  @@map("snacks")
+}
+
+model Company {
+  id            String @id @default(uuid())
+  name          String
+  email         String
+  phone         String
+  contact Contact @relation(fields: [contact_id], references: [id])
+  contact_id    String
+  adress Address @relation(fields: [adress_id], references: [id])
+  adress_id    String
+  @@map("companies")
+}
+
+
+model Contact {
+  id            String @id @default(uuid())
+  id_instagram  String?
+  id_facebook   String?
+  id_twitter    String?
+  company       Company[]
+  @@map("contacts")
+}
+
+
+model Address {
+  id            String @id @default(uuid())
+  state         String
+  city          String
+  road          String
+  number        String @default("s/n")
+  company       Company[]
+  @@map("addresses")
+}
+
+model Client {
+  id           String @id @default(uuid())
+  name         String
+  email        String?
+  password     String?
+  id_facebook  String?
+  id_instagram String?
+  comment      Comment[]
+  @@map("clients")
+}
+
+model Comment {
+  id           String @id @default(uuid())
+  message      String
+  client Client @relation(fields: [id_client], references: [id])
+  id_client    String
+  star_level  Int
+  @@map("comments")
+}
+
