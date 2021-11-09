@@ -1,9 +1,8 @@
 import { Router } from "express";
+import { SnacksController } from "../controller";
 
 const router = Router();
 
-router.get("/snacks", (req, res) => {
-  res.send("list snacks");
-});
+router.get("/snacks", new SnacksController().listSnacks);
 
 export { router };
