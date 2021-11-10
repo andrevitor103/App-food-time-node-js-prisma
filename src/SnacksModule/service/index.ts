@@ -1,6 +1,11 @@
 import { Snack } from ".prisma/client";
 import { prismaClient } from "../../prisma";
 
+interface Category {
+  id: string;
+  description: string;
+}
+
 class SnacksService {
   async listSnacks() {
     const snacks = await prismaClient.snack.findMany({
@@ -24,6 +29,15 @@ class SnacksService {
       },
     });
     return newSnack;
+  }
+
+  async filterByCategories(categories: string) {
+    let snack = prismaClient.snack.findMany({
+      where: {
+        category_id: categories,
+      },
+    });
+    return snack;
   }
 }
 
