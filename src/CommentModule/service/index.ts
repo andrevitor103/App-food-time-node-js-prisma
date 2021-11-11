@@ -8,6 +8,25 @@ interface Comment {
 }
 
 class CommentService {
+  validationFields(data) {
+    const fieldsRequired = ["message", "star_level", "id_client"];
+    let error = [];
+    error = fieldsRequired.map((item) => data[item] != undefined);
+    if (error.some((item) => item == false)) {
+      throw new Error("Falta alguns campos...");
+    }
+  }
+
+  async listLast4() {
+    const comments = await prismaClient.comment.findMany({
+      take: 4,
+      include: {
+        client: true,
+      },
+    });
+    return comments;
+  }
+
   async createComment(comment: Comment) {
     const newComment = await prismaClient.comment.create({
       data: {
@@ -17,15 +36,6 @@ class CommentService {
       },
     });
     return newComment;
-  }
-
-  validationFields(data) {
-    const fieldsRequired = ["message", "star_level", "id_client"];
-    let error = [];
-    error = fieldsRequired.map((item) => data[item] != undefined);
-    if (error.some((item) => item == false)) {
-      throw new Error("Falta alguns campos...");
-    }
   }
 }
 

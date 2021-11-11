@@ -13,6 +13,12 @@ class CommentController {
       return response.status(400).json("Erro ao cadastrar novo comentário");
     }
   }
+
+  async listLast4(request: Request, response: Response) {
+    const servico = new CommentService();
+    const lastComments = await servico.listLast4();
+    return response.status(200).json(lastComments);
+  }
 }
 
 export { CommentController };
